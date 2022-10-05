@@ -70,7 +70,6 @@ export const Login = () => {
                 id="username"
                 autoComplete="username"
                 isInvalid={!!formik.errors.username}
-                required
                 ref={inputRef}
               />
               <Form.Control.Feedback tooltip type="invalid">
@@ -90,7 +89,6 @@ export const Login = () => {
                 id="password"
                 autoComplete="current-password"
                 isInvalid={!!formik.errors.password}
-                required
               />
               <Form.Control.Feedback tooltip type="invalid">
                 {formik.errors.password}

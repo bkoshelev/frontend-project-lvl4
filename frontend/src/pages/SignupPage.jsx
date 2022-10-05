@@ -75,7 +75,6 @@ export const SignupPage = () => {
                 id="username"
                 autoComplete="username"
                 isInvalid={formik.errors.username}
-                required
                 ref={inputRef}
               />
               <Form.Control.Feedback type="invalid" tooltip>
@@ -95,7 +94,6 @@ export const SignupPage = () => {
                 id="password"
                 autoComplete="current-password"
                 isInvalid={formik.errors.password}
-                required
               />
               <Form.Control.Feedback type="invalid" tooltip>
                 {formik.errors.password}
@@ -113,7 +111,6 @@ export const SignupPage = () => {
                 name="confirmPassword"
                 id="confirmPassword"
                 isInvalid={formik.errors.confirmPassword}
-                required
               />
               <Form.Control.Feedback type="invalid" tooltip>
                 {formik.errors.confirmPassword}
