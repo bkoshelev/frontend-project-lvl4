@@ -61,13 +61,13 @@ export const Login = () => {
             <FloatingLabel
               label={t("loginPage.nickNameLabel")}
               className="mb-3"
+              controlId="username"
             >
               <Form.Control
                 onChange={formik.handleChange}
                 value={formik.values.username}
                 placeholder="username"
                 name="username"
-                id="username"
                 autoComplete="username"
                 isInvalid={!!formik.errors.username}
                 ref={inputRef}
@@ -79,6 +79,7 @@ export const Login = () => {
             <FloatingLabel
               label={t("loginPage.passwordLabel")}
               className="mb-3"
+              controlId="password"
             >
               <Form.Control
                 type="password"
@@ -86,7 +87,6 @@ export const Login = () => {
                 value={formik.values.password}
                 placeholder="password"
                 name="password"
-                id="password"
                 autoComplete="current-password"
                 isInvalid={!!formik.errors.password}
               />

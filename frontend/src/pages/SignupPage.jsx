@@ -67,12 +67,12 @@ export const SignupPage = () => {
             <FloatingLabel
               label={t("signupPage.usernameLabel")}
               className="mb-3"
+              controlId={"username"}
             >
               <Form.Control
                 onChange={formik.handleChange}
                 value={formik.values.username}
                 name="username"
-                id="username"
                 autoComplete="username"
                 isInvalid={formik.errors.username}
                 ref={inputRef}
@@ -84,6 +84,7 @@ export const SignupPage = () => {
             <FloatingLabel
               label={t("signupPage.passwordLabel")}
               className="mb-3"
+              controlId={"password"}
             >
               <Form.Control
                 type="password"
@@ -91,7 +92,6 @@ export const SignupPage = () => {
                 value={formik.values.password}
                 placeholder="password"
                 name="password"
-                id="password"
                 autoComplete="current-password"
                 isInvalid={formik.errors.password}
               />
@@ -102,6 +102,7 @@ export const SignupPage = () => {
             <FloatingLabel
               label={t("signupPage.confirmPasswordLabel")}
               className="mb-3"
+              controlId="confirmPassword"
             >
               <Form.Control
                 type="password"
@@ -109,7 +110,6 @@ export const SignupPage = () => {
                 value={formik.values.confirmPassword}
                 placeholder="password"
                 name="confirmPassword"
-                id="confirmPassword"
                 isInvalid={formik.errors.confirmPassword}
               />
               <Form.Control.Feedback type="invalid" tooltip>
