@@ -1,6 +1,6 @@
 import { createContext, useMemo, useState } from 'react';
 import { getUserId } from '../utils';
-import { createNewSocketConnection } from '../utils/socket';
+import createNewSocketConnection from '../utils/socket';
 
 export const AuthContext = createContext({});
 

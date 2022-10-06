@@ -3,11 +3,11 @@ import { actions as messageSliceActions } from '../slices/messagesSlice';
 import { actions as channelsSliceActions } from '../slices/channelsSlice';
 import store from '../slices/index';
 
-export const createNewSocketConnection = () => {
+const createNewSocketConnection = () => {
   const socketData = {};
 
   return () => {
-    if (socketData.socket === null) {
+    if (!socketData.socket) {
       socketData.socket = io();
 
       socketData.socket.on('connect', () => {
