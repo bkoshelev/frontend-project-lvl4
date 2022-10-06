@@ -35,13 +35,10 @@ const channelsSlice = createSlice({
     builder
       .addCase(fetchChatData.fulfilled, (state, action) => {
         channelsAdapter.addMany(state, action.payload.channels);
-      })
-      .addCase(fetchChatData.fulfilled, (state, action) => {
         state.currentChannelId = action.payload.currentChannelId;
         state.loading = 'succeeded';
         state.error = null;
-      });
-    builder
+      })
       .addCase(fetchChatData.rejected, (state) => {
         state.loading = 'failed';
         state.error = null;
