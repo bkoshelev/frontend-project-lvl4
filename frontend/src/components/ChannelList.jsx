@@ -66,10 +66,17 @@ export const ChannelList = () => {
                 {`# ${name}`}
               </Button>
               <Dropdown.Toggle
+                as={Button}
                 split
                 id="dropdown-split-basic"
                 variant={id === currentChannelId ? "secondary" : "light"}
-              />
+                label={"test"}
+              >
+                <span class="visually-hidden">
+                  {t("chatPage.channelSettingsLabel")}
+                </span>
+              </Dropdown.Toggle>
+
               <Dropdown.Menu>
                 <Dropdown.Item onClick={handleClickRemoveChannel(id)}>
                   {t("chatPage.removeLabel")}
