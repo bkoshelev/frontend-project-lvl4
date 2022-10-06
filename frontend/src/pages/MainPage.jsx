@@ -5,14 +5,14 @@ import { toast } from "react-toastify";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+import Container from "react-bootstrap/esm/Container";
 import { ChannelList } from "../components/ChannelList";
 import { Chat } from "../components/Chat";
 import { ModalElement } from "../components/Modal";
 
 import { useFetch } from "../hooks";
-import { fetchChatData } from "../slices/chatSlice";
+import { fetchChatData } from "../slices/channelsSlice";
 import { SocketProvider } from "../contexts";
-import Container from "react-bootstrap/esm/Container";
 
 export const MainPage = () => {
   const status = useFetch(fetchChatData);
@@ -31,17 +31,16 @@ export const MainPage = () => {
         <Container className="h-100 d-flex">
           <Row className="flex-grow-1 shadow my-4">
             <Col className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
-              <ChannelList></ChannelList>
+              <ChannelList />
             </Col>
             <Col className="col p-0 h-100">
-              <Chat></Chat>
+              <Chat />
             </Col>
           </Row>
         </Container>
-        <ModalElement></ModalElement>
+        <ModalElement />
       </SocketProvider>
     );
-  } else {
-    return null;
   }
+  return null;
 };

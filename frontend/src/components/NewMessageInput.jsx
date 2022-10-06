@@ -10,7 +10,7 @@ import Form from "react-bootstrap/Form";
 import { getUserId } from "../utils";
 import { SocketContext } from "../contexts";
 
-import { ReactComponent as ArrowRight } from "./../icons/arrow_right.svg";
+import { ReactComponent as ArrowRight } from "../icons/arrow_right.svg";
 
 LeoProfanity.loadDictionary("ru");
 
@@ -19,9 +19,9 @@ export const NewMessageInput = () => {
   const inputRef = useRef();
   const { t } = useTranslation();
 
-  const currentChannelId = useSelector((state) => {
-    return state.chat.currentChannelId;
-  });
+  const currentChannelId = useSelector(
+    (state) => state.channels.currentChannelId
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -59,7 +59,7 @@ export const NewMessageInput = () => {
         />
         <span className="visually-hidden">Отправить</span>
         <InputGroup.Text id="basic-addon2" className="">
-          <ArrowRight></ArrowRight>
+          <ArrowRight />
         </InputGroup.Text>
       </InputGroup>
     </form>

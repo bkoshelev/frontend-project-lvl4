@@ -4,19 +4,15 @@ import { useSelector } from "react-redux";
 export const Messages = () => {
   const messagesContainer = useRef();
 
-  const currentChannelId = useSelector((state) => {
-    return state.chat.currentChannelId;
-  });
+  const currentChannelId = useSelector(
+    (state) => state.channels.currentChannelId
+  );
 
-  const messages = useSelector((state) => {
-    return state.messages.ids
-      .map((id) => {
-        return state.messages.entities[id];
-      })
-      .filter(({ channelId }) => {
-        return channelId === currentChannelId;
-      });
-  });
+  const messages = useSelector((state) =>
+    state.messages.ids
+      .map((id) => state.messages.entities[id])
+      .filter(({ channelId }) => channelId === currentChannelId)
+  );
 
   useEffect(() => {
     messagesContainer.current.scrollTop =
@@ -29,13 +25,11 @@ export const Messages = () => {
       className="chat-messages overflow-auto px-5"
       ref={messagesContainer}
     >
-      {messages.map(({ username, body, id }) => {
-        return (
-          <div className="text-break mb-2" key={id}>
-            <b>{username}</b>: {body}
-          </div>
-        );
-      })}
+      {messages.map(({ username, body, id }) => (
+        <div className="text-break mb-2" key={id}>
+          <b>{username}</b>:{body}
+        </div>
+      ))}
     </div>
   );
 };

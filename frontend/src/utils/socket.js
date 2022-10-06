@@ -1,42 +1,37 @@
-
 import io from 'socket.io-client';
 import { actions as messageSliceActions } from '../slices/messagesSlice';
-import { actions as channelsSliceActions } from "../slices/channelsSlice"
-import store from './../slices/index'
-
-let socket = null
+import { actions as channelsSliceActions } from '../slices/channelsSlice';
+import store from '../slices/index';
 
 export const createNewSocketConnection = () => {
-    if (socket === null) {
-        socket = io()
+  const socketData = {};
 
-        socket.on('connect', () => {
-        });
+  return () => {
+    if (socketData.socket === null) {
+      socketData.socket = io();
 
+      socketData.socket.on('connect', () => {
+      });
 
-        socket.on("newMessage", (data) => {
-            store.dispatch(messageSliceActions.addMessage(data));
-        })
+      socketData.socket.on('newMessage', (data) => {
+        store.dispatch(messageSliceActions.addMessage(data));
+      });
 
-        socket.on("newChannel", (data) => {
-            store.dispatch(channelsSliceActions.addChannel(data));
-        })
+      socketData.socket.on('newChannel', (data) => {
+        store.dispatch(channelsSliceActions.addChannel(data));
+      });
 
-        socket.on("removeChannel", (data) => {
-            store.dispatch(channelsSliceActions.removeChannel(String(data.id)));
-        })
+      socketData.socket.on('removeChannel', (data) => {
+        store.dispatch(channelsSliceActions.removeChannel(String(data.id)));
+      });
 
-        socket.on("renameChannel", (data) => {
-            store.dispatch(channelsSliceActions.updateChannel({ id: String(data.id), changes: { name: data.name } }));
-        })
-
-        // socket.on('disconnect', () => {
-        //     // setIsConnected(false);
-        // });
-
-        // socket.on('pong', () => {
-        //     // setLastPong(new Date().toISOString());
-        // });
+      socketData.socket.on('renameChannel', (data) => {
+        store.dispatch(channelsSliceActions
+          .updateChannel({ id: String(data.id), changes: { name: data.name } }));
+      });
     }
-    return socket
-}
+    return socketData.socket;
+  };
+};
+
+export default createNewSocketConnection();

@@ -5,19 +5,18 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
 
-import { selectors } from "../slices/channelsSlice";
-import { actions } from "../slices/chatSlice";
-import { actions as modalActions } from "./../slices/modalSlice";
+import { selectors, actions } from "../slices/channelsSlice";
+import { actions as modalActions } from "../slices/modalSlice";
 
-import { ReactComponent as Plus } from "./../icons/plus.svg";
+import { ReactComponent as Plus } from "../icons/plus.svg";
 
 export const ChannelList = () => {
   const { t } = useTranslation();
 
   const channelsData = useSelector(selectors.selectAll);
-  const currentChannelId = useSelector((state) => {
-    return state.chat.currentChannelId;
-  });
+  const currentChannelId = useSelector(
+    (state) => state.channels.currentChannelId
+  );
   const dispatch = useDispatch();
 
   const handleClickAddChannel = () => {
@@ -45,13 +44,13 @@ export const ChannelList = () => {
           className="p-0 text-primary btn btn-group-vertical"
           onClick={handleClickAddChannel}
         >
-          <Plus></Plus>
+          <Plus />
           <span className="visually-hidden">+</span>
         </button>
       </div>
       <ul className="flex-column nav-pills nav-fill px-2 gap-2">
-        {channelsData.map(({ name, id, removable }) => {
-          return removable ? (
+        {channelsData.map(({ name, id, removable }) =>
+          removable ? (
             <Dropdown
               as={ButtonGroup}
               key={id}
@@ -61,7 +60,7 @@ export const ChannelList = () => {
               <Button
                 variant={id === currentChannelId ? "secondary" : "light"}
                 onClick={handleSelect(id)}
-                className={"text-truncate"}
+                className="text-truncate"
               >
                 {`# ${name}`}
               </Button>
@@ -70,9 +69,9 @@ export const ChannelList = () => {
                 split
                 id="dropdown-split-basic"
                 variant={id === currentChannelId ? "secondary" : "light"}
-                label={"test"}
+                label="test"
               >
-                <span class="visually-hidden">
+                <span className="visually-hidden">
                   {t("chatPage.channelSettingsLabel")}
                 </span>
               </Dropdown.Toggle>
@@ -96,8 +95,8 @@ export const ChannelList = () => {
             >
               # {name}
             </Button>
-          );
-        })}
+          )
+        )}
       </ul>
     </>
   );
