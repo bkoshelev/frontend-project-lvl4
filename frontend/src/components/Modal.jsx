@@ -169,12 +169,16 @@ const RenameChannelModal = ({ handleClose, extra }) => {
       </Modal.Header>
       <Modal.Body>
         <FormControl
+          id="name"
           ref={inputRef}
           name={"name"}
           onChange={formik.handleChange}
           value={formik.values.name}
           isInvalid={!!formik.errors.name}
         ></FormControl>
+        <label htmlFor="name" className="visually-hidden">
+          {t("renameModal.inputLabel")}
+        </label>
         <FormControl.Feedback type="invalid">
           {formik.errors.name}
         </FormControl.Feedback>
