@@ -1,14 +1,20 @@
 import axios from "axios";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useFormik } from "formik";
-import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/index.js";
-import routes from "../routes.js";
 import { useTranslation } from "react-i18next";
+import { object, string } from "yup";
+
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Card from "react-bootstrap/Card";
-import * as Yup from "yup";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+
+import { useAuth } from "../hooks";
+import routes from "../routes.js";
 
 export const Login = () => {
   const { t } = useTranslation();
@@ -30,9 +36,9 @@ export const Login = () => {
       username: "",
       password: "",
     },
-    validationSchema: Yup.object().shape({
-      username: Yup.string().required(t("errors.required")),
-      password: Yup.string().required(t("errors.required")),
+    validationSchema: object().shape({
+      username: string().required(t("errors.required")),
+      password: string().required(t("errors.required")),
     }),
     onSubmit: async (values, { setFieldError }) => {
       try {
@@ -45,17 +51,15 @@ export const Login = () => {
           setFieldError("username", t("loginPage.error"));
           setFieldError("password", t("loginPage.error"));
           inputRef.current.select();
-          return;
         }
-        throw err;
       }
     },
   });
 
   return (
-    <div className="container-fluid">
-      <div className="row justify-content-center pt-5">
-        <div className="col-sm-4">
+    <Container>
+      <Row className="justify-content-center  align-items-center h-100">
+        <Col className="col-sm-4 mb-5">
           <Form onSubmit={formik.handleSubmit} className="p-3">
             <h2 className="text-center">{t("loginPage.signin")}</h2>
             <FloatingLabel
@@ -109,8 +113,8 @@ export const Login = () => {
               ]}
             </Card.Body>
           </Card>
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };

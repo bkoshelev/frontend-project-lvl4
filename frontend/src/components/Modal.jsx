@@ -31,6 +31,8 @@ const AddChannelModal = ({ handleClose }) => {
     validationSchema: Yup.object().shape({
       name: Yup.string()
         .required(t("errors.required"))
+        .min(3, t("errors.min3"))
+        .max(20, t("errors.max20"))
         .notOneOf(channelNames, t("errors.uniq")),
     }),
     onSubmit: (values, { setSubmitting }) => {
@@ -58,7 +60,11 @@ const AddChannelModal = ({ handleClose }) => {
           onChange={formik.handleChange}
           value={formik.values.name}
           isInvalid={!!formik.errors.name}
+          id={"name"}
         ></FormControl>
+        <label htmlFor="name" className="visually-hidden">
+          {t("createModal.inputLabel")}
+        </label>
         <FormControl.Feedback type="invalid">
           {formik.errors.name}
         </FormControl.Feedback>
@@ -84,6 +90,7 @@ const RemoveChannel = ({ handleClose, extra }) => {
 
   const socket = useContext(SocketContext);
   const formik = useFormik({
+    initialValues: {},
     onSubmit: (_, { setSubmitting }) => {
       socket.emit("removeChannel", extra, () => {
         setSubmitting(false);
@@ -138,6 +145,8 @@ const RenameChannelModal = ({ handleClose, extra }) => {
     validationSchema: Yup.object().shape({
       name: Yup.string()
         .required(t("errors.required"))
+        .min(3, t("errors.min3"))
+        .max(20, t("errors.max20"))
         .notOneOf(channelNames, t("errors.uniq")),
     }),
     onSubmit: (values, { setSubmitting }) => {
@@ -191,6 +200,7 @@ const modals = {
   removeChannel: RemoveChannel,
   renameChannel: RenameChannelModal,
 };
+
 export const ModalElement = () => {
   const dispatch = useDispatch();
 

@@ -16,8 +16,8 @@ i18n
                         exit: "Выйти",
                     },
                     errorPage: {
-                        title: "Что-то пошло не так",
-                        body: "разработчики скоро все починят"
+                        title: "Страница не найдена",
+                        body: "Но вы можете перейти на главную страницу"
                     },
                     loginPage: {
                         signin: "Войти",
@@ -34,19 +34,25 @@ i18n
                         message_one: '{{count}} сообщение',
                         message_few: '{{count}} сообщения',
                         message_many: '{{count}} сообщений',
-                        fetchDataError: "Ошибка соединения"
+                        fetchDataError: "Ошибка соединения",
+                        removeLabel: "Удалить",
+                        renameLabel: "Переименовать",
+                        channelSettingsLabel: 'Управление каналом',
+                        inputLabel: "Новое сообщение"
                     },
                     signupPage: {
                         signup: "Зарегистрироваться",
                         confirmPasswordLabel: "Подтвердите пароль",
                         passwordLabel: "Пароль",
-                        usernameLabel: "Имя пользователя"
+                        usernameLabel: "Имя пользователя",
+                        heading: "Регистрация"
                     },
                     createModal: {
                         success: "Канал создан",
                         title: `Добавить канал`,
                         cancel: "Отменить",
-                        agree: "Отправить"
+                        agree: "Отправить",
+                        inputLabel: "Имя канала"
                     },
                     removeModal: {
                         success: "Канал удалён",

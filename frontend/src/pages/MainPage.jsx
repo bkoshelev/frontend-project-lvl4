@@ -1,17 +1,18 @@
-import Container from "react-bootstrap/Container";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { toast } from "react-toastify";
-import { useTranslation } from "react-i18next";
 
 import { ChannelList } from "../components/ChannelList";
 import { Chat } from "../components/Chat";
+import { ModalElement } from "../components/Modal";
 
 import { useFetch } from "../hooks";
 import { fetchChatData } from "../slices/chatSlice";
 import { SocketProvider } from "../contexts";
-import { ModalElement } from "../components/Modal";
-import { useEffect } from "react";
+import Container from "react-bootstrap/esm/Container";
 
 export const MainPage = () => {
   const status = useFetch(fetchChatData);
@@ -27,8 +28,8 @@ export const MainPage = () => {
   if (status === "succeeded") {
     return (
       <SocketProvider>
-        <Container className="my-4 overflow-hidden rounded shadow">
-          <Row className="row flex-grow-1 flex-fill h-100">
+        <Container className="h-100 d-flex">
+          <Row className="flex-grow-1 shadow my-4">
             <Col className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
               <ChannelList></ChannelList>
             </Col>
@@ -36,8 +37,8 @@ export const MainPage = () => {
               <Chat></Chat>
             </Col>
           </Row>
-          <ModalElement></ModalElement>
         </Container>
+        <ModalElement></ModalElement>
       </SocketProvider>
     );
   } else {

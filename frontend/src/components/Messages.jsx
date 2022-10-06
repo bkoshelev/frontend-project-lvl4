@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 
 export const Messages = () => {
   const messagesContainer = useRef();
