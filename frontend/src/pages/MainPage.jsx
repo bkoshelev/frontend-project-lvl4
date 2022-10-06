@@ -1,31 +1,31 @@
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-import Container from "react-bootstrap/esm/Container";
-import { ChannelList } from "../components/ChannelList";
-import { Chat } from "../components/Chat";
-import { ModalElement } from "../components/Modal";
+import Container from 'react-bootstrap/esm/Container';
+import { ChannelList } from '../components/ChannelList';
+import { Chat } from '../components/Chat';
+import { ModalElement } from '../components/Modal';
 
-import { useFetch } from "../hooks";
-import { fetchChatData } from "../slices/channelsSlice";
-import { SocketProvider } from "../contexts";
+import { useFetch } from '../hooks';
+import { fetchChatData } from '../slices/channelsSlice';
+import { SocketProvider } from '../contexts';
 
 export const MainPage = () => {
   const status = useFetch(fetchChatData);
   const { t } = useTranslation();
-  const toastText = t("chatPage.fetchDataError");
+  const toastText = t('chatPage.fetchDataError');
 
   useEffect(() => {
-    if (status === "failed") {
+    if (status === 'failed') {
       toast(toastText);
     }
   }, [status, toastText]);
 
-  if (status === "succeeded") {
+  if (status === 'succeeded') {
     return (
       <SocketProvider>
         <Container className="h-100 d-flex">

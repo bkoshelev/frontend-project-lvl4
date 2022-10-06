@@ -1,15 +1,17 @@
-import React, { useEffect, useRef } from "react";
-import { useFormik } from "formik";
-import { object, string, ref } from "yup";
-import { useTranslation } from "react-i18next";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useRef } from 'react';
+import { useFormik } from 'formik';
+import { object, string, ref } from 'yup';
+import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
+import {
+  Button, Col, Container, Form, Row,
+} from 'react-bootstrap';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
-import routes from "../routes";
-import { useAuth } from "../hooks";
+import routes from '../routes';
+import { useAuth } from '../hooks';
 
 export const SignupPage = () => {
   const { t } = useTranslation();
@@ -24,35 +26,35 @@ export const SignupPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
-      confirmPassword: "",
+      username: '',
+      password: '',
+      confirmPassword: '',
     },
     validateOnBlur: true,
     validateOnChange: true,
     validationSchema: object().shape({
       username: string()
-        .required(t("errors.required"))
-        .min(3, t("errors.min3"))
-        .max(20, t("errors.max20")),
+        .required(t('errors.required'))
+        .min(3, t('errors.min3'))
+        .max(20, t('errors.max20')),
       password: string()
-        .required(t("errors.required"))
-        .min(6, t("errors.min6")),
+        .required(t('errors.required'))
+        .min(6, t('errors.min6')),
       confirmPassword: string().oneOf(
-        [ref("password"), null],
-        t("errors.matchPassword")
+        [ref('password'), null],
+        t('errors.matchPassword'),
       ),
     }),
     onSubmit: async (values, { setFieldError }) => {
       try {
         const res = await axios.post(routes.signupPath(), values);
-        localStorage.setItem("userId", JSON.stringify(res.data));
+        localStorage.setItem('userId', JSON.stringify(res.data));
         auth.logIn();
-        navigate("/");
+        navigate('/');
       } catch (err) {
         formik.setSubmitting(false);
         if (err.response.status === 409) {
-          setFieldError("username", t("errors.userAlreadyExist"));
+          setFieldError('username', t('errors.userAlreadyExist'));
           inputRef.current.select();
         }
       }
@@ -64,11 +66,14 @@ export const SignupPage = () => {
       <Row className="justify-content-center pt-5">
         <Col className="col-sm-4">
           <Form onSubmit={formik.handleSubmit} className="p-3">
-            <h2 className="text-center mb-3"> {t("signupPage.heading")}</h2>
+            <h2 className="text-center mb-3">
+              {' '}
+              {t('signupPage.heading')}
+            </h2>
             <FloatingLabel
-              label={t("signupPage.usernameLabel")}
+              label={t('signupPage.usernameLabel')}
               className="mb-3"
-              controlId={"username"}
+              controlId="username"
             >
               <Form.Control
                 onChange={formik.handleChange}
@@ -83,9 +88,9 @@ export const SignupPage = () => {
               </Form.Control.Feedback>
             </FloatingLabel>
             <FloatingLabel
-              label={t("signupPage.passwordLabel")}
+              label={t('signupPage.passwordLabel')}
               className="mb-3"
-              controlId={"password"}
+              controlId="password"
             >
               <Form.Control
                 type="password"
@@ -101,7 +106,7 @@ export const SignupPage = () => {
               </Form.Control.Feedback>
             </FloatingLabel>
             <FloatingLabel
-              label={t("signupPage.confirmPasswordLabel")}
+              label={t('signupPage.confirmPasswordLabel')}
               className="mb-3"
               controlId="confirmPassword"
             >
@@ -124,7 +129,7 @@ export const SignupPage = () => {
               className="w-100"
               disabled={formik.isSubmitting}
             >
-              {t("signupPage.signup")}
+              {t('signupPage.signup')}
             </Button>
           </Form>
         </Col>

@@ -1,20 +1,20 @@
-import axios from "axios";
-import { useEffect, useRef } from "react";
-import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { object, string } from "yup";
+import axios from 'axios';
+import { useEffect, useRef } from 'react';
+import { useFormik } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { object, string } from 'yup';
 
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
-import { useAuth } from "../hooks";
-import routes from "../routes.js";
+import { useAuth } from '../hooks';
+import routes from '../routes.js';
 
 export const Login = () => {
   const { t } = useTranslation();
@@ -24,7 +24,7 @@ export const Login = () => {
   const navigate = useNavigate();
 
   if (auth.loggedIn) {
-    navigate("/");
+    navigate('/');
   }
 
   useEffect(() => {
@@ -33,23 +33,23 @@ export const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
     validationSchema: object().shape({
-      username: string().required(t("errors.required")),
-      password: string().required(t("errors.required")),
+      username: string().required(t('errors.required')),
+      password: string().required(t('errors.required')),
     }),
     onSubmit: async (values, { setFieldError }) => {
       try {
         const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem("userId", JSON.stringify(res.data));
+        localStorage.setItem('userId', JSON.stringify(res.data));
         auth.logIn();
       } catch (err) {
         formik.setSubmitting(false);
         if (err.isAxiosError && err.response.status === 401) {
-          setFieldError("username", t("loginPage.error"));
-          setFieldError("password", t("loginPage.error"));
+          setFieldError('username', t('loginPage.error'));
+          setFieldError('password', t('loginPage.error'));
           inputRef.current.select();
         }
       }
@@ -61,9 +61,9 @@ export const Login = () => {
       <Row className="justify-content-center  align-items-center h-100">
         <Col className="col-sm-4 mb-5">
           <Form onSubmit={formik.handleSubmit} className="p-3">
-            <h2 className="text-center">{t("loginPage.signin")}</h2>
+            <h2 className="text-center">{t('loginPage.signin')}</h2>
             <FloatingLabel
-              label={t("loginPage.nickNameLabel")}
+              label={t('loginPage.nickNameLabel')}
               className="mb-3"
               controlId="username"
             >
@@ -81,7 +81,7 @@ export const Login = () => {
               </Form.Control.Feedback>
             </FloatingLabel>
             <FloatingLabel
-              label={t("loginPage.passwordLabel")}
+              label={t('loginPage.passwordLabel')}
               className="mb-3"
               controlId="password"
             >
@@ -99,16 +99,16 @@ export const Login = () => {
               </Form.Control.Feedback>
             </FloatingLabel>
             <Button type="submit" variant="outline-primary w-100">
-              {t("loginPage.signin")}
+              {t('loginPage.signin')}
             </Button>
           </Form>
           <Card>
             <Card.Body className="text-center">
               {[
-                t("loginPage.noAccount"),
-                " ",
+                t('loginPage.noAccount'),
+                ' ',
                 <a key={2} href="/signup">
-                  {t("loginPage.toSignupPageLink")}
+                  {t('loginPage.toSignupPageLink')}
                 </a>,
               ]}
             </Card.Body>

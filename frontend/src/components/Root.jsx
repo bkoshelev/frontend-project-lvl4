@@ -1,12 +1,10 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 
-import { Header } from "./Header";
+import { Header } from './Header';
 
-export const Root = () => {
-  return (
-    <div className="vh-100 d-flex flex-column">
-      <Header></Header>
-      <Outlet></Outlet>
-    </div>
-  );
-};
+export const Root = () => (
+  <div className="vh-100 d-flex flex-column">
+    <Header />
+    <Outlet />
+  </div>
+);

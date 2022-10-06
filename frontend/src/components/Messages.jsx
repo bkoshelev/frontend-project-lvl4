@@ -1,22 +1,19 @@
-import { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 
 export const Messages = () => {
   const messagesContainer = useRef();
 
   const currentChannelId = useSelector(
-    (state) => state.channels.currentChannelId
+    (state) => state.channels.currentChannelId,
   );
 
-  const messages = useSelector((state) =>
-    state.messages.ids
-      .map((id) => state.messages.entities[id])
-      .filter(({ channelId }) => channelId === currentChannelId)
-  );
+  const messages = useSelector((state) => state.messages.ids
+    .map((id) => state.messages.entities[id])
+    .filter(({ channelId }) => channelId === currentChannelId));
 
   useEffect(() => {
-    messagesContainer.current.scrollTop =
-      messagesContainer.current.scrollHeight;
+    messagesContainer.current.scrollTop = messagesContainer.current.scrollHeight;
   }, [messages]);
 
   return (
@@ -27,7 +24,9 @@ export const Messages = () => {
     >
       {messages.map(({ username, body, id }) => (
         <div className="text-break mb-2" key={id}>
-          <b>{username}</b>:{body}
+          <b>{username}</b>
+          :
+          {body}
         </div>
       ))}
     </div>

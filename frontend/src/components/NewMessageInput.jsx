@@ -1,18 +1,18 @@
-import { useContext, useEffect, useRef } from "react";
-import { useFormik } from "formik";
-import * as LeoProfanity from "leo-profanity";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { useContext, useEffect, useRef } from 'react';
+import { useFormik } from 'formik';
+import * as LeoProfanity from 'leo-profanity';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
-import InputGroup from "react-bootstrap/InputGroup";
-import Form from "react-bootstrap/Form";
+import InputGroup from 'react-bootstrap/InputGroup';
+import Form from 'react-bootstrap/Form';
 
-import { getUserId } from "../utils";
-import { SocketContext } from "../contexts";
+import { getUserId } from '../utils';
+import { SocketContext } from '../contexts';
 
-import { ReactComponent as ArrowRight } from "../icons/arrow_right.svg";
+import { ReactComponent as ArrowRight } from '../icons/arrow_right.svg';
 
-LeoProfanity.loadDictionary("ru");
+LeoProfanity.loadDictionary('ru');
 
 export const NewMessageInput = () => {
   const socket = useContext(SocketContext);
@@ -20,15 +20,15 @@ export const NewMessageInput = () => {
   const { t } = useTranslation();
 
   const currentChannelId = useSelector(
-    (state) => state.channels.currentChannelId
+    (state) => state.channels.currentChannelId,
   );
 
   const formik = useFormik({
     initialValues: {
-      body: "",
+      body: '',
     },
     onSubmit: (values, helpers) => {
-      socket.emit("newMessage", {
+      socket.emit('newMessage', {
         body: LeoProfanity.clean(values.body),
         channelId: currentChannelId,
         username: getUserId().username,
@@ -50,8 +50,8 @@ export const NewMessageInput = () => {
       <InputGroup>
         <Form.Control
           name="body"
-          aria-label={t("chatPage.inputLabel")}
-          placeholder={t("chatPage.writeText")}
+          aria-label={t('chatPage.inputLabel')}
+          placeholder={t('chatPage.writeText')}
           className="border-0 p-0 ps-2"
           onChange={formik.handleChange}
           value={formik.values.body}
