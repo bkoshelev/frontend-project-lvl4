@@ -1,43 +1,45 @@
-import { useContext, useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { toast } from 'react-toastify';
-import { useTranslation } from 'react-i18next';
+import React, { useContext, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import FormControl from 'react-bootstrap/FormControl';
-import Form from 'react-bootstrap/Form';
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import FormControl from "react-bootstrap/FormControl";
+import Form from "react-bootstrap/Form";
 
-import { actions } from '../slices/modalSlice';
-import { selectors } from '../slices/channelsSlice';
-import { SocketContext } from '../contexts';
+import { actions } from "../slices/modalSlice";
+import { selectors } from "../slices/channelsSlice";
+import { SocketContext } from "../contexts";
 
 const AddChannelModal = ({ handleClose }) => {
   const socket = useContext(SocketContext);
   const { t } = useTranslation();
 
-  const channelNames = useSelector((state) => selectors.selectAll(state).map(({ name }) => name));
+  const channelNames = useSelector((state) =>
+    selectors.selectAll(state).map(({ name }) => name)
+  );
 
   const inputRef = useRef(null);
   const formik = useFormik({
     initialValues: {
-      name: '',
+      name: "",
     },
     validateOnChange: false,
     validationSchema: Yup.object().shape({
       name: Yup.string()
-        .required(t('errors.required'))
-        .min(3, t('errors.min3'))
-        .max(20, t('errors.max20'))
-        .notOneOf(channelNames, t('errors.uniq')),
+        .required(t("errors.required"))
+        .min(3, t("errors.min3"))
+        .max(20, t("errors.max20"))
+        .notOneOf(channelNames, t("errors.uniq")),
     }),
     onSubmit: (values, { setSubmitting }) => {
-      socket.emit('newChannel', values, () => {
+      socket.emit("newChannel", values, () => {
         setSubmitting(false);
         handleClose();
-        toast(t('createModal.success'));
+        toast(t("createModal.success"));
       });
     },
   });
@@ -49,7 +51,7 @@ const AddChannelModal = ({ handleClose }) => {
   return (
     <Form onSubmit={formik.handleSubmit}>
       <Modal.Header closeButton>
-        <Modal.Title>{t('createModal.title')}</Modal.Title>
+        <Modal.Title>{t("createModal.title")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <FormControl
@@ -61,7 +63,7 @@ const AddChannelModal = ({ handleClose }) => {
           id="name"
         />
         <label htmlFor="name" className="visually-hidden">
-          {t('createModal.inputLabel')}
+          {t("createModal.inputLabel")}
         </label>
         <FormControl.Feedback type="invalid">
           {formik.errors.name}
@@ -73,10 +75,10 @@ const AddChannelModal = ({ handleClose }) => {
           variant="secondary"
           onClick={handleClose}
         >
-          {t('createModal.cancel')}
+          {t("createModal.cancel")}
         </Button>
         <Button disabled={formik.isSubmitting} variant="primary" type="submit">
-          {t('createModal.agree')}
+          {t("createModal.agree")}
         </Button>
       </Modal.Footer>
     </Form>
@@ -90,10 +92,10 @@ const RemoveChannel = ({ handleClose, extra }) => {
   const formik = useFormik({
     initialValues: {},
     onSubmit: (_, { setSubmitting }) => {
-      socket.emit('removeChannel', extra, () => {
+      socket.emit("removeChannel", extra, () => {
         setSubmitting(false);
         handleClose();
-        toast(t('removeModal.success'));
+        toast(t("removeModal.success"));
       });
     },
   });
@@ -101,19 +103,19 @@ const RemoveChannel = ({ handleClose, extra }) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Modal.Header closeButton>
-        <Modal.Title>{t('removeModal.title')}</Modal.Title>
+        <Modal.Title>{t("removeModal.title")}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{t('removeModal.body')}</Modal.Body>
+      <Modal.Body>{t("removeModal.body")}</Modal.Body>
       <Modal.Footer>
         <Button
           disabled={formik.isSubmitting}
           variant="secondary"
           onClick={handleClose}
         >
-          {t('removeModal.cancel')}
+          {t("removeModal.cancel")}
         </Button>
         <Button disabled={formik.isSubmitting} variant="danger" type="submit">
-          {t('removeModal.agree')}
+          {t("removeModal.agree")}
         </Button>
       </Modal.Footer>
     </form>
@@ -124,9 +126,13 @@ const RenameChannelModal = ({ handleClose, extra }) => {
   const { t } = useTranslation();
   const socket = useContext(SocketContext);
 
-  const changingElement = useSelector((state) => selectors.selectById(state, extra.id));
+  const changingElement = useSelector((state) =>
+    selectors.selectById(state, extra.id)
+  );
 
-  const channelNames = useSelector((state) => selectors.selectAll(state).map(({ name }) => name));
+  const channelNames = useSelector((state) =>
+    selectors.selectAll(state).map(({ name }) => name)
+  );
 
   const inputRef = useRef(null);
   const formik = useFormik({
@@ -136,16 +142,16 @@ const RenameChannelModal = ({ handleClose, extra }) => {
     validateOnChange: false,
     validationSchema: Yup.object().shape({
       name: Yup.string()
-        .required(t('errors.required'))
-        .min(3, t('errors.min3'))
-        .max(20, t('errors.max20'))
-        .notOneOf(channelNames, t('errors.uniq')),
+        .required(t("errors.required"))
+        .min(3, t("errors.min3"))
+        .max(20, t("errors.max20"))
+        .notOneOf(channelNames, t("errors.uniq")),
     }),
     onSubmit: (values, { setSubmitting }) => {
-      socket.emit('renameChannel', { ...values, ...extra }, () => {
+      socket.emit("renameChannel", { ...values, ...extra }, () => {
         setSubmitting(false);
         handleClose();
-        toast(t('renameModal.success'));
+        toast(t("renameModal.success"));
       });
     },
   });
@@ -157,7 +163,7 @@ const RenameChannelModal = ({ handleClose, extra }) => {
   return (
     <Form onSubmit={formik.handleSubmit}>
       <Modal.Header closeButton>
-        <Modal.Title>{t('renameModal.title')}</Modal.Title>
+        <Modal.Title>{t("renameModal.title")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <FormControl
@@ -169,7 +175,7 @@ const RenameChannelModal = ({ handleClose, extra }) => {
           isInvalid={!!formik.errors.name}
         />
         <label htmlFor="name" className="visually-hidden">
-          {t('renameModal.inputLabel')}
+          {t("renameModal.inputLabel")}
         </label>
         <FormControl.Feedback type="invalid">
           {formik.errors.name}
@@ -181,10 +187,10 @@ const RenameChannelModal = ({ handleClose, extra }) => {
           variant="secondary"
           onClick={handleClose}
         >
-          {t('renameModal.cancel')}
+          {t("renameModal.cancel")}
         </Button>
         <Button disabled={formik.isSubmitting} variant="primary" type="submit">
-          {t('renameModal.agree')}
+          {t("renameModal.agree")}
         </Button>
       </Modal.Footer>
     </Form>
@@ -200,11 +206,7 @@ const modals = {
 export const ModalElement = () => {
   const dispatch = useDispatch();
 
-  const {
-    isOpened: show,
-    type,
-    extra,
-  } = useSelector((state) => state.modal);
+  const { isOpened: show, type, extra } = useSelector((state) => state.modal);
 
   const handleClose = () => {
     dispatch(actions.closeModal());

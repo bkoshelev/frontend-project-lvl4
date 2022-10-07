@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { fetchChatData, actions as channelsSliceActions } from './channelsSlice';
 
