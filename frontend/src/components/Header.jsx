@@ -1,12 +1,12 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
 
-import { useAuth } from "../hooks";
+import { useAuth } from '../hooks';
 
-export const Header = () => {
+const Header = () => {
   const { loggedIn, logOut } = useAuth();
   const { t } = useTranslation();
 
@@ -18,14 +18,16 @@ export const Header = () => {
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
       <Container>
         <a href="/" className="navbar-brand">
-          {t("header.hexletLogo")}
+          {t('header.hexletLogo')}
         </a>
         {loggedIn && (
           <Button className="ms-auto" variant="primary" onClick={handleClick}>
-            {t("header.exit")}
+            {t('header.exit')}
           </Button>
         )}
       </Container>
     </nav>
   );
 };
+
+export default Header;

@@ -1,16 +1,13 @@
-import {
-  createBrowserRouter,
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 
-  Navigate,
-} from 'react-router-dom';
+import Login from './pages/Login';
+import NotFoundPage from './pages/NotFoundPage';
+import MainPage from './pages/MainPage';
+import SignupPage from './pages/SignupPage';
 
-import { Login } from './pages/Login';
-import { NotFoundPage } from './pages/NotFoundPage';
-import { Root } from './components/Root';
+import Root from './components/Root';
 
 import { useAuth } from './hooks';
-import { MainPage } from './pages/MainPage';
-import { SignupPage } from './pages/SignupPage';
 
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();

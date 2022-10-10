@@ -1,4 +1,4 @@
-import { createContext, useMemo, useState } from 'react';
+import React, { createContext, useMemo, useState } from 'react';
 import { getUserId } from '../utils';
 import createNewSocketConnection from '../utils/socket';
 

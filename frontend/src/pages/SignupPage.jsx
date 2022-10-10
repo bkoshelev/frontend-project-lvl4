@@ -13,7 +13,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import routes from '../routes';
 import { useAuth } from '../hooks';
 
-export const SignupPage = () => {
+const SignupPage = () => {
   const { t } = useTranslation();
   const auth = useAuth();
   const navigate = useNavigate();
@@ -137,3 +137,5 @@ export const SignupPage = () => {
     </Container>
   );
 };
+
+export default SignupPage;
