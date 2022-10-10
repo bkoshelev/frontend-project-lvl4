@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/esm/Container';
 import ChannelList from '../components/ChannelList';
 import Chat from '../components/Chat';
-import { ModalElement } from '../components/Modal';
+import Modal from '../components/Modal';
 
 import { useFetch } from '../hooks';
 import { fetchChatData } from '../slices/channelsSlice';
@@ -38,7 +38,7 @@ const MainPage = () => {
             </Col>
           </Row>
         </Container>
-        <ModalElement />
+        <Modal />
       </SocketProvider>
     );
   }

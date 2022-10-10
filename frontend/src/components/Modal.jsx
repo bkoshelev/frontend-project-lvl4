@@ -197,7 +197,7 @@ const modals = {
   renameChannel: RenameChannelModal,
 };
 
-export const ModalElement = () => {
+const ModalElement = () => {
   const dispatch = useDispatch();
 
   const { isOpened: show, type, extra } = useSelector((state) => state.modal);
@@ -214,3 +214,5 @@ export const ModalElement = () => {
     </Modal>
   );
 };
+
+export default ModalElement;
