@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 
 import { useAuth } from '../hooks';
+import routes from '../routes';
 
 const Header = () => {
   const { loggedIn, logOut } = useAuth();
@@ -17,7 +18,7 @@ const Header = () => {
   return (
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
       <Container>
-        <a href="/" className="navbar-brand">
+        <a href={routes.mainPage()} className="navbar-brand">
           {t('header.hexletLogo')}
         </a>
         {loggedIn && (

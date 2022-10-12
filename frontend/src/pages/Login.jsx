@@ -107,7 +107,7 @@ const Login = () => {
               {[
                 t('loginPage.noAccount'),
                 ' ',
-                <a key={2} href="/signup">
+                <a key={2} href={routes.signupPage()}>
                   {t('loginPage.toSignupPageLink')}
                 </a>,
               ]}

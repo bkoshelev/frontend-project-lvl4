@@ -9,13 +9,14 @@ import SignupPage from './pages/SignupPage';
 import Root from './components/Root';
 
 import { useAuth } from './hooks';
+import routes from './routes';
 
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
 
   return (
     auth.loggedIn ? children : (
-      <Navigate to="/login" />
+      <Navigate to={routes.loginPath()} />
     )
   );
 };
