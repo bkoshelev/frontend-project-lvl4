@@ -1,4 +1,6 @@
-import React, { createContext, useMemo, useState } from 'react';
+/* eslint-disable react/jsx-no-constructed-context-values */
+
+import React, { createContext, useState } from 'react';
 import { getUserId } from '../utils';
 
 export const AuthContext = createContext({});
@@ -15,10 +17,8 @@ export const AuthProvider = ({ children }) => {
     setLoggedIn(false);
   };
 
-  const value = useMemo(() => ({ loggedIn, logIn, logOut }), [loggedIn]);
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
       {children}
     </AuthContext.Provider>
   );
