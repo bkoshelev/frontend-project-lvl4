@@ -6,7 +6,7 @@ import { Provider, ErrorBoundary } from '@rollbar/react';
 import App from './App';
 
 import './utils/i18n';
-import 'react-toastify/dist/ReactToastify.css';
+import './index.scss';
 
 const rollbarConfig = {
   enabled: process.env.NODE_ENV === 'production',
