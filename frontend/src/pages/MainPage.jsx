@@ -1,22 +1,39 @@
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 
-import Container from 'react-bootstrap/esm/Container';
+import { useNavigate } from 'react-router-dom';
 import ChannelList from '../components/ChannelList';
 import Chat from '../components/Chat';
 import Modal from '../components/Modal';
 
-import { useFetch } from '../hooks';
-import { fetchChatData } from '../slices/channelsSlice';
-import { SocketProvider } from '../contexts';
+import channelsAPI from '../api/channels';
+import accountAPI from '../api/account';
+import routes from '../routes';
 
-const MainPage = () => {
-  const status = useFetch(fetchChatData);
+const useGetChatData = () => {
   const { t } = useTranslation();
+  const status = useSelector((state) => state.channels.loading);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    channelsAPI.chatDataFetch()
+      .then(unwrapResult)
+      .catch((response) => {
+        if (response.status === 401) {
+          accountAPI.logOut().then(() => {
+            navigate(routes.loginPage());
+          });
+        }
+      });
+  }, []);
+
   const toastText = t('chatPage.fetchDataError');
 
   useEffect(() => {
@@ -25,9 +42,15 @@ const MainPage = () => {
     }
   }, [status, toastText]);
 
+  return status;
+};
+
+const MainPage = () => {
+  const status = useGetChatData();
+
   if (status === 'succeeded') {
     return (
-      <SocketProvider>
+      <>
         <Container className="h-100 my-4 overflow-hidden rounded shadow">
           <Row className="h-100 bg-white flex-md-row">
             <Col className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
@@ -39,7 +62,7 @@ const MainPage = () => {
           </Row>
         </Container>
         <Modal />
-      </SocketProvider>
+      </>
     );
   }
   return null;

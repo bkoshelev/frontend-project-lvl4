@@ -1,18 +1,19 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 
-import { useAuth } from '../hooks';
 import routes from '../routes';
+import accountAPI from '../api/account';
 
 const Header = () => {
-  const { loggedIn, logOut } = useAuth();
   const { t } = useTranslation();
+  const loggedIn = useSelector((state) => state.auth.loggedIn);
 
-  const handleClick = () => {
-    logOut();
+  const handleClick = async () => {
+    await accountAPI.logOut();
   };
 
   return (

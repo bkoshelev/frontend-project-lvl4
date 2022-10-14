@@ -1,9 +1,9 @@
-import axios from 'axios';
 import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { object, string } from 'yup';
+import { useSelector } from 'react-redux';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -13,19 +13,13 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-import { useAuth } from '../hooks';
 import routes from '../routes.js';
+import accountAPI from '../api/account';
 
 const Login = () => {
   const { t } = useTranslation();
-
-  const auth = useAuth();
   const inputRef = useRef();
-  const navigate = useNavigate();
-
-  if (auth.loggedIn) {
-    navigate('/');
-  }
+  const { loggedIn } = useSelector((state) => state.auth);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -40,14 +34,12 @@ const Login = () => {
       username: string().required(t('errors.required')),
       password: string().required(t('errors.required')),
     }),
-    onSubmit: async (values, { setFieldError }) => {
+    onSubmit: (values, { setFieldError }) => {
       try {
-        const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
-        auth.logIn();
-      } catch (err) {
+        accountAPI.logIn(values);
+      } catch (error) {
         formik.setSubmitting(false);
-        if (err.isAxiosError && err.response.status === 401) {
+        if (error.response.status === 401) {
           setFieldError('username', t('loginPage.error'));
           setFieldError('password', t('loginPage.error'));
           inputRef.current.select();
@@ -56,7 +48,7 @@ const Login = () => {
     },
   });
 
-  return (
+  return loggedIn ? <Navigate to={routes.mainPage()} /> : (
     <Container>
       <Row className="justify-content-center  align-items-center h-100">
         <Col className="col-sm-4 mb-5">

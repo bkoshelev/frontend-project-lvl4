@@ -2,19 +2,23 @@
 
 import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import userAPI from '../api/user';
 
 import routes from '../routes';
-import { getAuthHeader } from '../utils';
 
 const GENERAL_CHANNEL_ID = 1;
 
 export const fetchChatData = createAsyncThunk(
   'chat/fetchData',
-  async () => {
-    const response = await axios.get(routes.dataPath(), {
-      headers: getAuthHeader(),
-    });
-    return response.data;
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(routes.dataPath(), {
+        headers: userAPI.getAuthHeader(),
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response);
+    }
   },
 );
 
@@ -54,6 +58,6 @@ const channelsSlice = createSlice({
   },
 });
 
-export const { actions } = channelsSlice;
+export const { actions, name } = channelsSlice;
 export const selectors = channelsAdapter.getSelectors((state) => state.channels);
 export default channelsSlice.reducer;

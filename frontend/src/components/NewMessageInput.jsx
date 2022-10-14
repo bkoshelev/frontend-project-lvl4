@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import * as LeoProfanity from 'leo-profanity';
 import { useSelector } from 'react-redux';
@@ -7,15 +7,13 @@ import { useTranslation } from 'react-i18next';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 
-import { getUserId } from '../utils';
-import { SocketContext } from '../contexts';
-
 import { ReactComponent as ArrowRight } from '../icons/arrow_right.svg';
+import { messagesAPI } from '../api/messages';
+import userAPI from '../api/user';
 
 LeoProfanity.loadDictionary('ru');
 
 const NewMessageInput = () => {
-  const socket = useContext(SocketContext);
   const inputRef = useRef();
   const { t } = useTranslation();
 
@@ -28,12 +26,16 @@ const NewMessageInput = () => {
       body: '',
     },
     onSubmit: (values, helpers) => {
-      socket.emit('newMessage', {
-        body: LeoProfanity.clean(values.body),
-        channelId: currentChannelId,
-        username: getUserId().username,
-      });
-      helpers.resetForm();
+      messagesAPI.createNewMessage(
+        {
+          body: LeoProfanity.clean(values.body),
+          channelId: currentChannelId,
+          username: userAPI.getUserData().username,
+        },
+      )
+        .then(() => {
+          helpers.resetForm();
+        });
     },
   });
 

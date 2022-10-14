@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -12,10 +12,9 @@ import Form from 'react-bootstrap/Form';
 
 import { actions } from '../slices/modalSlice';
 import { selectors } from '../slices/channelsSlice';
-import { SocketContext } from '../contexts';
+import channelsAPI from '../api/channels';
 
 const AddChannelModal = ({ handleClose }) => {
-  const socket = useContext(SocketContext);
   const { t } = useTranslation();
 
   const channelNames = useSelector((state) => selectors.selectAll(state).map(({ name }) => name));
@@ -34,11 +33,12 @@ const AddChannelModal = ({ handleClose }) => {
         .notOneOf(channelNames, t('errors.uniq')),
     }),
     onSubmit: (values, { setSubmitting }) => {
-      socket.emit('newChannel', values, () => {
-        setSubmitting(false);
-        handleClose();
-        toast(t('createModal.success'));
-      });
+      channelsAPI.createNewChannel(values)
+        .then(() => {
+          setSubmitting(false);
+          handleClose();
+          toast(t('createModal.success'));
+        });
     },
   });
 
@@ -86,11 +86,10 @@ const AddChannelModal = ({ handleClose }) => {
 const RemoveChannel = ({ handleClose, extra }) => {
   const { t } = useTranslation();
 
-  const socket = useContext(SocketContext);
   const formik = useFormik({
     initialValues: {},
     onSubmit: (_, { setSubmitting }) => {
-      socket.emit('removeChannel', extra, () => {
+      channelsAPI.removeChannel(extra).then(() => {
         setSubmitting(false);
         handleClose();
         toast(t('removeModal.success'));
@@ -122,7 +121,6 @@ const RemoveChannel = ({ handleClose, extra }) => {
 
 const RenameChannelModal = ({ handleClose, extra }) => {
   const { t } = useTranslation();
-  const socket = useContext(SocketContext);
 
   const changingElement = useSelector((state) => selectors.selectById(state, extra.id));
 
@@ -142,11 +140,12 @@ const RenameChannelModal = ({ handleClose, extra }) => {
         .notOneOf(channelNames, t('errors.uniq')),
     }),
     onSubmit: (values, { setSubmitting }) => {
-      socket.emit('renameChannel', { ...values, ...extra }, () => {
-        setSubmitting(false);
-        handleClose();
-        toast(t('renameModal.success'));
-      });
+      channelsAPI.renameChannel({ ...values, ...extra })
+        .then(() => {
+          setSubmitting(false);
+          handleClose();
+          toast(t('renameModal.success'));
+        });
     },
   });
 

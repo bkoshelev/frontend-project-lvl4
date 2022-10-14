@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { object, string, ref } from 'yup';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -10,12 +9,11 @@ import {
 } from 'react-bootstrap';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
+import accountAPI from '../api/account';
 import routes from '../routes';
-import { useAuth } from '../hooks';
 
 const SignupPage = () => {
   const { t } = useTranslation();
-  const auth = useAuth();
   const navigate = useNavigate();
 
   const inputRef = useRef();
@@ -47,10 +45,9 @@ const SignupPage = () => {
     }),
     onSubmit: async (values, { setFieldError }) => {
       try {
-        const res = await axios.post(routes.signupPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
-        auth.logIn();
-        navigate('/');
+        accountAPI.signUp(values).then(() => {
+          navigate(routes.mainPage());
+        });
       } catch (err) {
         formik.setSubmitting(false);
         if (err.response.status === 409) {
