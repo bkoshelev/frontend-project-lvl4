@@ -10,8 +10,8 @@ import store from './slices';
 
 const rollbarConfig = {
   enabled: process.env.NODE_ENV === 'production',
-  accessToken: process.env.ROLLBAR_TOKEN,
-  environment: 'production',
+  accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
+  environment: process.env.NODE_ENV,
   server: {
     branch: 'main',
   },
