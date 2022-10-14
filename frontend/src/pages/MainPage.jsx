@@ -34,6 +34,7 @@ const useGetChatData = () => {
       }
     };
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toastText = t('chatPage.fetchDataError');

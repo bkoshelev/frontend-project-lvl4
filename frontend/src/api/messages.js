@@ -10,6 +10,8 @@ socketAPI.subscribe('newMessage', (data) => {
   store.dispatch(messagesSliceActions.addMessage(data));
 });
 
-export const messagesAPI = {
+const messagesAPI = {
   createNewMessage,
 };
+
+export default messagesAPI;

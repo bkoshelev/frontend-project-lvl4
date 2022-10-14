@@ -1,4 +1,4 @@
-export const ruLocale = {
+const ruLocale = {
   translation: {
     header: {
       hexletLogo: 'Hexlet Chat',
@@ -70,3 +70,5 @@ export const ruLocale = {
     },
   },
 };
+
+export default ruLocale;

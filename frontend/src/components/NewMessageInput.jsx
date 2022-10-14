@@ -8,7 +8,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 
 import { ReactComponent as ArrowRight } from '../icons/arrow_right.svg';
-import { messagesAPI } from '../api/messages';
+import messagesAPI from '../api/messages';
 import userAPI from '../api/user';
 
 LeoProfanity.loadDictionary('ru');
