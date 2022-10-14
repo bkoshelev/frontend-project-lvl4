@@ -60,7 +60,7 @@ const NewMessageInput = () => {
             value={formik.values.body}
             ref={inputRef}
           />
-          <span className="visually-hidden">Отправить</span>
+          <span className="visually-hidden">{t('chatPage.sendNewMessage')}</span>
           <InputGroup.Text id="basic-addon2" className="">
             <ArrowRight />
           </InputGroup.Text>

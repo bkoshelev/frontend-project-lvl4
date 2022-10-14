@@ -34,12 +34,11 @@ const Login = () => {
       username: string().required(t('errors.required')),
       password: string().required(t('errors.required')),
     }),
-    onSubmit: (values, { setFieldError }) => {
+    onSubmit: async (values, { setFieldError }) => {
       try {
-        accountAPI.logIn(values);
+        await accountAPI.logIn(values);
       } catch (error) {
-        formik.setSubmitting(false);
-        if (error.response.status === 401) {
+        if (error.status === 401) {
           setFieldError('username', t('loginPage.error'));
           setFieldError('password', t('loginPage.error'));
           inputRef.current.select();

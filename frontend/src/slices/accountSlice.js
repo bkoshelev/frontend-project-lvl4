@@ -10,17 +10,27 @@ const hasToken = !!userAPI.getAuthToken();
 
 export const logInRequest = createAsyncThunk(
   'account/logIn',
-  async (data) => {
-    const res = await axios.post(routes.loginPath(), data);
-    userAPI.setUserData(res.data);
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(routes.loginPath(), data);
+      userAPI.setUserData(response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue({ status: error.response.status });
+    }
   },
 );
 
 export const signUpRequest = createAsyncThunk(
   'account/signUp',
-  async (data) => {
-    const res = await axios.post(routes.signupPath(), data);
-    userAPI.setUserData(res.data);
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(routes.signupPath(), data);
+      userAPI.setUserData(response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue({ status: error.response.status });
+    }
   },
 );
 

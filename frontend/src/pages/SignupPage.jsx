@@ -45,12 +45,11 @@ const SignupPage = () => {
     }),
     onSubmit: async (values, { setFieldError }) => {
       try {
-        accountAPI.signUp(values).then(() => {
-          navigate(routes.mainPage());
-        });
-      } catch (err) {
+        await accountAPI.signUp(values);
+        navigate(routes.mainPage());
+      } catch (error) {
         formik.setSubmitting(false);
-        if (err.response.status === 409) {
+        if (error.status === 409) {
           setFieldError('username', t('errors.userAlreadyExist'));
           inputRef.current.select();
         }

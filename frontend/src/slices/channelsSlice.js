@@ -17,7 +17,7 @@ export const fetchChatData = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response);
+      return rejectWithValue({ status: error.response.status });
     }
   },
 );

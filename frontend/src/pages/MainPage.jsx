@@ -2,13 +2,12 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { unwrapResult } from '@reduxjs/toolkit';
+import { useNavigate } from 'react-router-dom';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 
-import { useNavigate } from 'react-router-dom';
 import ChannelList from '../components/ChannelList';
 import Chat from '../components/Chat';
 import Modal from '../components/Modal';
@@ -23,15 +22,18 @@ const useGetChatData = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    channelsAPI.chatDataFetch()
-      .then(unwrapResult)
-      .catch((response) => {
-        if (response.status === 401) {
+    const fetchData = async () => {
+      try {
+        channelsAPI.chatDataFetch();
+      } catch (error) {
+        if (error.status === 401) {
           accountAPI.logOut().then(() => {
             navigate(routes.loginPage());
           });
         }
-      });
+      }
+    };
+    fetchData();
   }, []);
 
   const toastText = t('chatPage.fetchDataError');

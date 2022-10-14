@@ -2,7 +2,7 @@ import store from '../slices/index';
 import { fetchChatData, actions as channelsSliceActions } from '../slices/channelsSlice';
 import socketAPI from '../utils/socket';
 
-const chatDataFetch = async () => store.dispatch(fetchChatData());
+const chatDataFetch = async () => store.dispatch(fetchChatData()).unwrap();
 
 const createNewChannel = async (data) => socketAPI.sendEvent('newChannel', data);
 

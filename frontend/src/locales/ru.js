@@ -29,6 +29,7 @@ export const ruLocale = {
       renameLabel: 'Переименовать',
       channelSettingsLabel: 'Управление каналом',
       inputLabel: 'Новое сообщение',
+      sendNewMessage: 'Отправить',
     },
     signupPage: {
       signup: 'Зарегистрироваться',
