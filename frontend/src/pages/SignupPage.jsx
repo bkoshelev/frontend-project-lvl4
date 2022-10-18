@@ -88,7 +88,7 @@ const SignupPage = () => {
             <FloatingLabel
               label={t('signupPage.passwordLabel')}
               className="mb-3"
-              controlId="password"
+              controlId="new-password"
             >
               <Form.Control
                 type="password"
@@ -99,7 +99,6 @@ const SignupPage = () => {
                 autoComplete="new-password"
                 isInvalid={formik.errors.password}
                 disabled={formik.isSubmitting}
-                id="new-password"
               />
               <Form.Control.Feedback type="invalid" tooltip>
                 {formik.errors.password}
