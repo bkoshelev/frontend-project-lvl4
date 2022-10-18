@@ -1,10 +1,7 @@
+import React, { createContext, useContext } from 'react';
 import io from 'socket.io-client';
 
-const socketInstance = io({
-  autoConnect: false,
-});
-
-const createIoPromise = (socket) => function ioPromise(eventName, data) {
+const createIoPromise = (socket) => (eventName, data) => {
   const promise = new Promise((resolve) => {
     socket.emit(eventName, data, (response) => {
       if (!response) {
@@ -16,25 +13,39 @@ const createIoPromise = (socket) => function ioPromise(eventName, data) {
   return promise;
 };
 
-const makeConnection = () => {
-  socketInstance.connect();
+export const socketInstance = io({
+  autoConnect: false,
+});
+
+export const SocketContext = createContext();
+
+export const SocketProvider = ({ children, socket }) => (
+  <SocketContext.Provider value={socket}>
+    {children}
+  </SocketContext.Provider>
+);
+
+export const useSocket = () => {
+  const socket = useContext(SocketContext);
+
+  const makeSocketConnection = () => {
+    socket.connect();
+  };
+
+  const socketDisconnect = () => {
+    socket.disconnect();
+  };
+
+  const sendEvent = (eventName, data) => createIoPromise(socket)(eventName, data);
+
+  const subscribe = (eventName, action) => {
+    socket.on(eventName, action);
+  };
+
+  return {
+    makeSocketConnection,
+    socketDisconnect,
+    sendEvent,
+    subscribe,
+  };
 };
-
-const disconnect = () => {
-  socketInstance.disconnect();
-};
-
-const sendEvent = (eventName, data) => createIoPromise(socketInstance)(eventName, data);
-
-const subscribe = (eventName, action) => {
-  socketInstance.on(eventName, action);
-};
-
-const socketAPI = {
-  makeConnection,
-  disconnect,
-  sendEvent,
-  subscribe,
-};
-
-export default socketAPI;

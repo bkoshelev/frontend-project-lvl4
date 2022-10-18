@@ -1,17 +1,15 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import { createInstance } from 'i18next';
 import ruLocale from './ru';
 
-i18n
-  .use(initReactI18next)
-  .init({
-    fallbackLng: 'ru',
-    interpolation: {
-      escapeValue: false,
-    },
-    resources: {
-      ru: ruLocale,
-    },
-  });
+const i18n = createInstance();
+i18n.init({
+  fallbackLng: 'ru',
+  interpolation: {
+    escapeValue: false,
+  },
+  resources: {
+    ru: ruLocale,
+  },
+});
 
 export default i18n;

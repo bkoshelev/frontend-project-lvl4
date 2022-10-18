@@ -8,30 +8,28 @@ import SignupPage from './pages/SignupPage';
 
 import Root from './components/Root';
 import AuthZonePageWrapper from './components/AuthZonePageWrapper';
+import routes from './routes';
 
 export default createBrowserRouter([
   {
-    path: '/',
-    element: (
-      <Root />
-    ),
+    element: <Root />,
     errorElement: <NotFoundPage />,
     children: [
       {
         element: <AuthZonePageWrapper />,
         children: [
           {
-            path: '/',
+            path: routes.mainPage(),
             element: <MainPage />,
           },
         ],
       },
       {
-        path: 'login',
+        path: routes.loginPage(),
         element: <Login />,
       },
       {
-        path: 'signup',
+        path: routes.signupPage(),
         element: <SignupPage />,
       },
     ],

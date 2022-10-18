@@ -6,11 +6,12 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 
 import routes from '../routes';
-import accountAPI from '../api/account';
+import useAccountAPI from '../api/account';
 
 const Header = () => {
   const { t } = useTranslation();
   const loggedIn = useSelector((state) => state.auth.loggedIn);
+  const accountAPI = useAccountAPI();
 
   const handleClick = async () => {
     await accountAPI.logOut();

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { Navigate } from 'react-router-dom';
@@ -14,12 +15,13 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import routes from '../routes.js';
-import accountAPI from '../api/account';
+import useAccountAPI from '../api/account';
 
 const Login = () => {
   const { t } = useTranslation();
   const inputRef = useRef();
   const { loggedIn } = useSelector((state) => state.auth);
+  const accountAPI = useAccountAPI();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -34,7 +36,8 @@ const Login = () => {
       username: string().required(t('errors.required')),
       password: string().required(t('errors.required')),
     }),
-    onSubmit: async (values, { setFieldError }) => {
+    onSubmit: async (values, { setFieldError, setSubmitting }) => {
+      setSubmitting(true);
       try {
         await accountAPI.logIn(values);
       } catch (error) {
@@ -59,12 +62,14 @@ const Login = () => {
               controlId="username"
             >
               <Form.Control
+                type="text"
                 onChange={formik.handleChange}
                 value={formik.values.username}
                 placeholder="username"
                 name="username"
-                autoComplete="username"
+                disabled={formik.isSubmitting}
                 isInvalid={!!formik.errors.username}
+                autoComplete="off"
                 ref={inputRef}
               />
               <Form.Control.Feedback tooltip type="invalid">
@@ -83,7 +88,9 @@ const Login = () => {
                 placeholder="password"
                 name="password"
                 autoComplete="current-password"
+                disabled={formik.isSubmitting}
                 isInvalid={!!formik.errors.password}
+                id="current-password"
               />
               <Form.Control.Feedback tooltip type="invalid">
                 {formik.errors.password}

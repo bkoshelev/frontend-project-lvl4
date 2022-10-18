@@ -25,12 +25,12 @@ const getAuthHeader = () => {
   return {};
 };
 
-const userAPI = {
+const useUserAPI = () => ({
   setUserData,
   removeUserData,
   getUserData,
   getAuthToken,
   getAuthHeader,
-};
+});
 
-export default userAPI;
+export default useUserAPI;

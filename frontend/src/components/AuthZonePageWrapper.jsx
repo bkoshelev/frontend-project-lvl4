@@ -3,15 +3,16 @@ import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 
 import routes from '../routes';
-import socketAPI from '../utils/socket';
+import { useSocket } from '../utils/socket';
 
 const AuthZonePageWrapper = () => {
   const { loggedIn } = useSelector((state) => state.auth);
+  const { makeSocketConnection, socketDisconnect } = useSocket();
 
   useEffect(() => {
-    socketAPI.makeConnection();
+    makeSocketConnection();
     return () => {
-      socketAPI.disconnect();
+      socketDisconnect();
     };
   });
 

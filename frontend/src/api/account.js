@@ -1,16 +1,18 @@
-import store from '../slices';
+import { useDispatch } from 'react-redux';
 import { logInRequest, signUpRequest, logout } from '../slices/accountSlice';
 
-const logIn = async (data) => store.dispatch(logInRequest(data)).unwrap();
+const useAccountAPI = () => {
+  const dispatch = useDispatch();
 
-const logOut = async () => store.dispatch(logout());
+  const logIn = async (data) => dispatch(logInRequest(data)).unwrap();
+  const logOut = async () => dispatch(logout());
+  const signUp = async (data) => dispatch(signUpRequest(data)).unwrap();
 
-const signUp = async (data) => store.dispatch(signUpRequest(data)).unwrap();
-
-const accountAPI = {
-  logIn,
-  logOut,
-  signUp,
+  return {
+    logIn,
+    logOut,
+    signUp,
+  };
 };
 
-export default accountAPI;
+export default useAccountAPI;

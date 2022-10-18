@@ -9,12 +9,13 @@ import {
 } from 'react-bootstrap';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
-import accountAPI from '../api/account';
 import routes from '../routes';
+import useAccountAPI from '../api/account';
 
 const SignupPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const accountAPI = useAccountAPI();
 
   const inputRef = useRef();
 
@@ -75,9 +76,10 @@ const SignupPage = () => {
                 onChange={formik.handleChange}
                 value={formik.values.username}
                 name="username"
-                autoComplete="username"
+                autoComplete="off"
                 isInvalid={formik.errors.username}
                 ref={inputRef}
+                disabled={formik.isSubmitting}
               />
               <Form.Control.Feedback type="invalid" tooltip>
                 {formik.errors.username}
@@ -94,8 +96,10 @@ const SignupPage = () => {
                 value={formik.values.password}
                 placeholder="password"
                 name="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 isInvalid={formik.errors.password}
+                disabled={formik.isSubmitting}
+                id="new-password"
               />
               <Form.Control.Feedback type="invalid" tooltip>
                 {formik.errors.password}

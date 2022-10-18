@@ -1,33 +1,44 @@
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+
 import store from '../slices/index';
 import { fetchChatData, actions as channelsSliceActions } from '../slices/channelsSlice';
-import socketAPI from '../utils/socket';
+import { useSocket } from '../utils/socket';
 
-const chatDataFetch = async () => store.dispatch(fetchChatData()).unwrap();
+const useChannelsAPI = () => {
+  const dispatch = useDispatch();
+  const { subscribe, sendEvent } = useSocket();
 
-const createNewChannel = async (data) => socketAPI.sendEvent('newChannel', data);
+  useEffect(() => {
+    subscribe('newChannel', (data) => {
+      store.dispatch(channelsSliceActions.addChannel(data));
+    });
 
-const removeChannel = async (data) => socketAPI.sendEvent('removeChannel', data);
+    subscribe('removeChannel', (data) => {
+      store.dispatch(channelsSliceActions.removeChannel(String(data.id)));
+    });
 
-const renameChannel = async (data) => socketAPI.sendEvent('renameChannel', data);
+    subscribe('renameChannel', ({ id, name }) => {
+      store.dispatch(channelsSliceActions
+        .updateChannel({ id: String(id), changes: { name } }));
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-socketAPI.subscribe('newChannel', (data) => {
-  store.dispatch(channelsSliceActions.addChannel(data));
-});
+  const chatDataFetch = async () => dispatch(fetchChatData()).unwrap();
 
-socketAPI.subscribe('removeChannel', (data) => {
-  store.dispatch(channelsSliceActions.removeChannel(String(data.id)));
-});
+  const createNewChannel = async (data) => sendEvent('newChannel', data);
 
-socketAPI.subscribe('renameChannel', ({ id, name }) => {
-  store.dispatch(channelsSliceActions
-    .updateChannel({ id: String(id), changes: { name } }));
-});
+  const removeChannel = async (data) => sendEvent('removeChannel', data);
 
-const channelsAPI = {
-  chatDataFetch,
-  createNewChannel,
-  removeChannel,
-  renameChannel,
+  const renameChannel = async (data) => sendEvent('renameChannel', data);
+
+  return ({
+    chatDataFetch,
+    createNewChannel,
+    removeChannel,
+    renameChannel,
+  });
 };
 
-export default channelsAPI;
+export default useChannelsAPI;

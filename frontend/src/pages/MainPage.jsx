@@ -7,19 +7,22 @@ import { useNavigate } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
+import Spinner from 'react-bootstrap/Spinner';
 
 import ChannelList from '../components/ChannelList';
 import Chat from '../components/Chat';
 import Modal from '../components/Modal';
 
-import channelsAPI from '../api/channels';
-import accountAPI from '../api/account';
 import routes from '../routes';
+import useChannelsAPI from '../api/channels';
+import useAccountAPI from '../api/account';
 
 const useGetChatData = () => {
   const { t } = useTranslation();
   const status = useSelector((state) => state.channels.loading);
   const navigate = useNavigate();
+  const channelsAPI = useChannelsAPI();
+  const accountAPI = useAccountAPI();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +41,6 @@ const useGetChatData = () => {
   }, []);
 
   const toastText = t('chatPage.fetchDataError');
-
   useEffect(() => {
     if (status === 'failed') {
       toast(toastText);
@@ -50,6 +52,16 @@ const useGetChatData = () => {
 
 const MainPage = () => {
   const status = useGetChatData();
+
+  if (status === 'idle') {
+    return (
+      <div className="d-flex flex-column h-100 justify-content-md-center align-items-center">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Загрузка...</span>
+        </Spinner>
+      </div>
+    );
+  }
 
   if (status === 'succeeded') {
     return (

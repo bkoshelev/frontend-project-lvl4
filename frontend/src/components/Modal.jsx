@@ -12,13 +12,12 @@ import Form from 'react-bootstrap/Form';
 
 import { actions } from '../slices/modalSlice';
 import { selectors } from '../slices/channelsSlice';
-import channelsAPI from '../api/channels';
+import useChannelsAPI from '../api/channels';
 
 const AddChannelModal = ({ handleClose }) => {
   const { t } = useTranslation();
-
+  const channelsAPI = useChannelsAPI();
   const channelNames = useSelector((state) => selectors.selectAll(state).map(({ name }) => name));
-
   const inputRef = useRef(null);
   const formik = useFormik({
     initialValues: {
@@ -59,6 +58,8 @@ const AddChannelModal = ({ handleClose }) => {
           value={formik.values.name}
           isInvalid={!!formik.errors.name}
           id="name"
+          disabled={formik.isSubmitting}
+          autoComplete="off"
         />
         <label htmlFor="name" className="visually-hidden">
           {t('createModal.inputLabel')}
@@ -85,15 +86,17 @@ const AddChannelModal = ({ handleClose }) => {
 
 const RemoveChannel = ({ handleClose, extra }) => {
   const { t } = useTranslation();
+  const channelsAPI = useChannelsAPI();
 
   const formik = useFormik({
     initialValues: {},
     onSubmit: (_, { setSubmitting }) => {
-      channelsAPI.removeChannel(extra).then(() => {
-        setSubmitting(false);
-        handleClose();
-        toast(t('removeModal.success'));
-      });
+      channelsAPI.removeChannel(extra)
+        .then(() => {
+          setSubmitting(false);
+          handleClose();
+          toast(t('removeModal.success'));
+        });
     },
   });
 
@@ -121,9 +124,8 @@ const RemoveChannel = ({ handleClose, extra }) => {
 
 const RenameChannelModal = ({ handleClose, extra }) => {
   const { t } = useTranslation();
-
+  const channelsAPI = useChannelsAPI();
   const changingElement = useSelector((state) => selectors.selectById(state, extra.id));
-
   const channelNames = useSelector((state) => selectors.selectAll(state).map(({ name }) => name));
 
   const inputRef = useRef(null);
@@ -166,6 +168,8 @@ const RenameChannelModal = ({ handleClose, extra }) => {
           onChange={formik.handleChange}
           value={formik.values.name}
           isInvalid={!!formik.errors.name}
+          disabled={formik.isSubmitting}
+          autoComplete="off"
         />
         <label htmlFor="name" className="visually-hidden">
           {t('renameModal.inputLabel')}

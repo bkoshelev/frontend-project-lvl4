@@ -8,14 +8,16 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 
 import { ReactComponent as ArrowRight } from '../icons/arrow_right.svg';
-import messagesAPI from '../api/messages';
-import userAPI from '../api/user';
+import useMessagesAPI from '../api/messages';
+import useUserAPI from '../api/user';
 
 LeoProfanity.loadDictionary('ru');
 
 const NewMessageInput = () => {
   const inputRef = useRef();
   const { t } = useTranslation();
+  const messagesAPI = useMessagesAPI();
+  const userAPI = useUserAPI();
 
   const currentChannelId = useSelector(
     (state) => state.channels.currentChannelId,
@@ -25,7 +27,7 @@ const NewMessageInput = () => {
     initialValues: {
       body: '',
     },
-    onSubmit: (values, helpers) => {
+    onSubmit: async (values, helpers) => {
       messagesAPI.createNewMessage(
         {
           body: LeoProfanity.clean(values.body),
@@ -41,7 +43,7 @@ const NewMessageInput = () => {
 
   useEffect(() => {
     inputRef.current.focus();
-  }, []);
+  }, [currentChannelId]);
 
   return (
     <div className="mt-auto px-5 py-3">
@@ -59,6 +61,8 @@ const NewMessageInput = () => {
             onChange={formik.handleChange}
             value={formik.values.body}
             ref={inputRef}
+            disabled={formik.isSubmitting}
+            autoComplete="off"
           />
           <span className="visually-hidden">{t('chatPage.sendNewMessage')}</span>
           <InputGroup.Text id="basic-addon2" className="">
