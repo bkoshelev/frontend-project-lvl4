@@ -6,14 +6,16 @@ import axios from 'axios';
 import userAPI from '../api/user';
 import routes from '../routes';
 
-const hasToken = !!userAPI.getAuthToken();
+const { getAuthToken, setUserData, removeUserData } = userAPI();
+
+const hasToken = !!getAuthToken();
 
 export const logInRequest = createAsyncThunk(
   'account/logIn',
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(routes.loginPath(), data);
-      userAPI.setUserData(response.data);
+      setUserData(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue({ status: error.response.status });
@@ -26,7 +28,7 @@ export const signUpRequest = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(routes.signupPath(), data);
-      userAPI.setUserData(response.data);
+      setUserData(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue({ status: error.response.status });
@@ -37,7 +39,7 @@ export const signUpRequest = createAsyncThunk(
 export const logout = createAsyncThunk(
   'account/logOut',
   () => {
-    userAPI.removeUserData();
+    removeUserData();
   },
 );
 

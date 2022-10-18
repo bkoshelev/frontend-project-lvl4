@@ -8,12 +8,14 @@ import routes from '../routes';
 
 const GENERAL_CHANNEL_ID = 1;
 
+const { getAuthHeader } = userAPI();
+
 export const fetchChatData = createAsyncThunk(
   'chat/fetchData',
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(routes.dataPath(), {
-        headers: userAPI.getAuthHeader(),
+        headers: getAuthHeader(),
       });
       return response.data;
     } catch (error) {

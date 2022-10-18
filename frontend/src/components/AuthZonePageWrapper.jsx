@@ -14,7 +14,8 @@ const AuthZonePageWrapper = () => {
     return () => {
       socketDisconnect();
     };
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return loggedIn ? <Outlet /> : <Navigate to={routes.loginPage()} />;
 };
